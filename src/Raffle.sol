@@ -34,8 +34,8 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     uint32 private constant NUMBER_OF_RANDOM_NUMEBRS = 1;
 
     /** Immutable variables */
-    uint256 private immutable i_entranceFee = 0.1 ether;
-    uint256 private immutable i_interval = 1 days;
+    uint256 private immutable i_entranceFee;
+    uint256 private immutable i_interval;
     VRFCoordinatorV2Interface private immutable i_vrfCoordinator;
     bytes32 private immutable i_gasLane;
     uint64 private immutable i_subscriptionId;
@@ -178,11 +178,15 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         }
     }
 
-    function getEntranceFee() public pure returns (uint256) {
+    function getEntranceFee() public view returns (uint256) {
         return i_entranceFee;
     }
 
     function getParticipants() public view returns (address[] memory) {
         return s_participants;
+    }
+
+    function getRaffleState() public view returns (RaffleState) {
+        return s_raffleState;
     }
 }
