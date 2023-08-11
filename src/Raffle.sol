@@ -14,7 +14,7 @@ import {AutomationCompatibleInterface} from "@chainlink/contracts/src/v0.8/Autom
  * @dev Imlemepnts Chainlink VRFv2
  */
 contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
-    error Raffle__NotEnoughEthToEnterRaffle(uint256 required, uint256 provided);
+    error Raffle__NotEnoughEthToEnterRaffle();
     error Raffle__TransferFailed(address to, uint256 amount);
     error Raffle__RaffleNotOpen();
     error Raffle__UpkeepNotNeeded(
@@ -69,11 +69,8 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     }
 
     function enterRaflle() external payable {
-        if (msg.value >= i_entranceFee)
-            revert Raffle__NotEnoughEthToEnterRaffle({
-                required: i_entranceFee,
-                provided: msg.value
-            });
+        if (msg.value < i_entranceFee)
+            revert Raffle__NotEnoughEthToEnterRaffle();
 
         if (s_raffleState != RaffleState.OPEN) {
             revert Raffle__RaffleNotOpen();
